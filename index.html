@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elias Lyng — IS-302 Praksisprosjekt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #222;
+      --accent: #c8f542;
+      --accent2: #4287f5;
+      --text: #e8e8e8;
+      --muted: #666;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+ 
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+ 
+    /* ── HEADER ── */
+    header {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 2rem clamp(1.5rem, 6vw, 5rem);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    header::after {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 70vw;
+      height: 70vw;
+      background: radial-gradient(circle, rgba(200,245,66,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+ 
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+ 
+    nav .logo {
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+ 
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+ 
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+ 
+    nav a:hover { color: var(--text); }
+ 
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 0 2rem;
+    }
+ 
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.1s ease forwards;
+    }
+ 
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      line-height: 0.95;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+    }
+ 
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+ 
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 42ch;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.35s ease forwards;
+    }
+ 
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s ease forwards;
+    }
+ 
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+ 
+    .btn-primary {
+      background: var(--accent);
+      color: #0d0d0d;
+      border: 1px solid var(--accent);
+      font-weight: 500;
+    }
+ 
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+ 
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+ 
+    .btn-outline:hover {
+      border-color: var(--text);
+    }
+ 
+    .header-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      padding-top: 2rem;
+    }
+ 
+    .scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+ 
+    .scroll-hint::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 3rem;
+      background: var(--border);
+      animation: pulse 2s ease infinite;
+    }
+ 
+    /* ── SECTIONS ── */
+    section {
+      padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem);
+      border-bottom: 1px solid var(--border);
+    }
+ 
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+ 
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 6rem;
+    }
+ 
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+ 
+    @media (max-width: 720px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+ 
+    .about-photo {
+      aspect-ratio: 3/4;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      max-width: 340px;
+    }
+ 
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+ 
+    .photo-placeholder {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+ 
+    .about-photo::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(transparent, var(--bg));
+      pointer-events: none;
+      z-index: 1;
+    }
+ 
+    .about-text h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+ 
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+ 
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+ 
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+ 
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+ 
+    /* ── VIDEO ── */
+    .video-wrapper {
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    .video-placeholder {
+      text-align: center;
+    }
+ 
+    .play-btn {
+      width: 5rem;
+      height: 5rem;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+ 
+    .play-btn:hover {
+      background: var(--accent);
+    }
+ 
+    .play-btn:hover svg path { fill: #0d0d0d; }
+ 
+    .play-btn svg { margin-left: 4px; }
+ 
+    .video-placeholder p {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+ 
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+ 
+    .skill-card {
+      background: var(--bg);
+      padding: 2rem;
+      transition: background 0.2s;
+    }
+ 
+    .skill-card:hover { background: var(--surface); }
+ 
+    .skill-card .icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+ 
+    .skill-card h3 {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+ 
+    .skill-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+ 
+    /* ── CONTACT ── */
+    .contact-inner {
+      max-width: 600px;
+    }
+ 
+    .contact-inner h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+ 
+    .contact-inner p {
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+ 
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+ 
+    .contact-link {
+      background: var(--bg);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.2s;
+      font-size: 0.95rem;
+    }
+ 
+    .contact-link:hover { background: var(--surface); }
+ 
+    .contact-link span:first-child {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      min-width: 80px;
+    }
+ 
+    .contact-link .arrow {
+      color: var(--muted);
+      font-size: 1.2rem;
+      transition: transform 0.2s, color 0.2s;
+    }
+ 
+    .contact-link:hover .arrow {
+      transform: translateX(4px);
+      color: var(--accent);
+    }
+ 
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem clamp(1.5rem, 6vw, 5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+ 
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 1; }
+    }
+ 
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+ 
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+ 
+<!-- ── HEADER ── -->
+<header>
+  <nav>
+    <span class="logo">thelyng.dev</span>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+ 
+  <div class="hero">
+    <p class="hero-label">IS-302 Praksisprosjekt — Høst 2026</p>
+    <h1>Elias<br /><em>Lyng</em></h1>
+    <p class="hero-sub">IT &amp; Information Systems student at the University of Agder, looking for a meaningful internship where I can contribute and grow.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Get in touch →</a>
+      <a href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+    </div>
+  </div>
+ 
+  <div class="header-footer">
+    <span>Based in Kristiansand, Norway</span>
+    <span class="scroll-hint">Scroll</span>
+  </div>
+</header>
+ 
+<!-- ── ABOUT ── -->
+<section id="about">
+  <p class="section-label reveal">01 — About</p>
+  <div class="about-grid">
+    <div class="about-photo reveal">
+      <div class="photo-placeholder">
+        <p>[ YOUR PHOTO ]</p>
+        <p style="margin-top:0.5rem; font-size:0.6rem;">Replace src with your image</p>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h2>Second-year IS student with a hands-on approach.</h2>
+      <p>I'm currently in my second year of studying IT and Information Systems at UiA. I'm practical by nature — I enjoy building things and solving real problems, not just learning theory.</p>
+      <p>I have experience with full-stack web development, database design, and systems administration. I'm looking for a practice placement where I can contribute to something real while deepening my understanding of how organisations work with information systems.</p>
+      <p>Outside of studies I spend time on fitness, music, and film — and I've recently returned from an exchange semester in New Zealand.</p>
+      <div class="tag-list">
+        <span class="tag">C# / .NET</span>
+        <span class="tag">MariaDB</span>
+        <span class="tag">Docker</span>
+        <span class="tag">HTML / CSS / JS</span>
+        <span class="tag">Linux / Bash</span>
+        <span class="tag">Git</span>
+        <span class="tag">Figma</span>
+        <span class="tag">Networking</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ── VIDEO ── -->
+<section id="video">
+  <p class="section-label reveal">02 — Presentation Video</p>
+  <div class="video-wrapper reveal">
+    <!-- Replace this block with your actual video embed:
+         YouTube:  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/YOUR_ID" frameborder="0" allowfullscreen></iframe>
+         Or a direct <video> tag if self-hosted -->
+    <div class="video-placeholder">
+      <div class="play-btn">
+        <svg width="20" height="20" viewBox="0 0 20 20">
+          <path d="M6 4l12 6-12 6V4z" fill="#c8f542"/>
+        </svg>
+      </div>
+      <p>VIDEO COMING SOON</p>
+      <p style="margin-top:0.4rem; font-size:0.65rem; opacity:0.5;">Replace this block with a YouTube embed or &lt;video&gt; tag</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <p class="section-label reveal">03 — What I bring</p>
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <div class="icon">⚙️</div>
+      <h3>Development</h3>
+      <p>Full-stack experience with C#, .NET, and MariaDB. Comfortable with Docker, REST APIs, and building systems from scratch.</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">🗄️</div>
+      <h3>Systems & IT</h3>
+      <p>Hands-on with hardware diagnostics, RAID configuration, network administration, and Linux environments.</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">📐</div>
+      <h3>Analysis & Design</h3>
+      <p>Experienced in requirements gathering, system design, and documentation. Comfortable with Figma for UI prototyping.</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">🤝</div>
+      <h3>Collaboration</h3>
+      <p>Used to working in teams with Git workflows, code review, and project planning. Direct and clear communicator.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <p class="section-label reveal">04 — Contact</p>
+  <div class="contact-inner reveal">
+    <h2>Let's work together.</h2>
+    <p>Interested in having me as a practice student? Reach out through any of the channels below.</p>
+    <div class="contact-links">
+      <a href="mailto:your@email.com" class="contact-link">
+        <span>Email</span>
+        <span>your@email.com</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank" class="contact-link">
+        <span>LinkedIn</span>
+        <span>linkedin.com/in/YOUR-LINKEDIN</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://praksisportalen.org" target="_blank" class="contact-link">
+        <span>Portal</span>
+        <span>praksisportalen.org</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+ 
+<!-- ── FOOTER ── -->
+<footer>
+  <span>© 2026 Elias Lyng</span>
+  <span>thelyng.dev</span>
+</footer>
+ 
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+ 
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
