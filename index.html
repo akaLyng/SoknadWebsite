@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elias Lyng — IS-302 Praksisprosjekt</title>
+  <title>IS-302 Praksisprosjekt</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -500,11 +500,63 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ── TAB SYSTEM ── */
+    .tab-switcher {
+      position: fixed;
+      top: 2rem;
+      right: clamp(1.5rem, 6vw, 5rem);
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10000;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .tab-btn {
+      padding: 0.75rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      font-weight: 400;
+      font-size: 0.7rem;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #0d0d0d;
+      border-color: var(--accent);
+      font-weight: 500;
+    }
+
+    .profile {
+      display: none;
+    }
+
+    .profile.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
- 
-<!-- ── HEADER ── -->
+
+<!-- ── TAB SWITCHER ── -->
+<div class="tab-switcher">
+  <button class="tab-btn active" data-profile="elias">Elias Lyng</button>
+  <button class="tab-btn" data-profile="daniel">Daniel</button>
+</div>
+
+<!-- ── ELIAS PROFILE ── -->
+<div class="profile active" id="elias-profile">
 <header>
   <nav>
     <span class="logo">thelyng.dev</span>
@@ -632,25 +684,203 @@
     </div>
   </div>
 </section>
+
+</div>
+
+<!-- ── DANIEL PROFILE ── -->
+<div class="profile" id="daniel-profile">
+
+<!-- ── HEADER ── -->
+<header>
+  <nav>
+    <span class="logo">thelyng.dev</span>
+    <ul>
+      <li><a href="#about">Om</a></li>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#skills">Ferdigheter</a></li>
+      <li><a href="#contact">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <p class="hero-label">IS-302 Praksisprosjekt — Høst 2026</p>
+    <h1>Daniel<br /><em>Sørebraten</em></h1>
+    <p class="hero-sub">2. års IT-student ved Universitetet i Agder, søker meningsfull praksisplass for å lære og vokse faglig.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Get in touch →</a>
+      <a href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+    </div>
+  </div>
+
+  <div class="header-footer">
+    <span>Basert i Kristiansand, Norge</span>
+    <span class="scroll-hint">Scroll</span>
+  </div>
+</header>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <p class="section-label reveal">01 — Om</p>
+  <div class="about-grid">
+    <div class="about-photo reveal">
+      <div class="photo-placeholder">
+        <p>[ YOUR PHOTO ]</p>
+        <p style="margin-top:0.5rem; font-size:0.6rem;">Replace src with your image</p>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h2>Praktisk og kunnskapsvillig 2. år IT-student.</h2>
+      <p>Jeg går 2. året på IT-studiet ved UiA og har utvekslet i Seoul under vårsemesteret. Jeg ser frem til å anvende kunnskapen min i praksis. Jeg søker en meningsfull praksisplass hvor jeg kan lære, utvikle meg og bidra til noe verdifullt.</p>
+      <p>Jeg har solide problemløsningsferdigheter og en bred interesse for IT. Erfaring fra kundeservice har gitt meg god forståelse for kommunikasjon, samarbeid og viktigheten av å levere gode resultater. Jeg er allsidig og liker å utfordre meg selv både faglig og personlig.</p>
+      <p>Når jeg ikke studerer eller jobber i Mandal Fengsel pleier jeg å trene, og reise når muligheten byr seg. Jeg ønsker en praksisplass hvor jeg kan gjøre en forskjell samtidig som jeg utvikler meg videre både faglig og personlig.</p>
+      <div class="tag-list">
+        <span class="tag">Problemløsning</span>
+        <span class="tag">IT-kunnskaper</span>
+        <span class="tag">Kundeservice</span>
+        <span class="tag">Trening & Fitness</span>
+        <span class="tag">Musikk</span>
+        <span class="tag">Reising</span>
+        <span class="tag">Samarbeid</span>
+        <span class="tag">Lærevillighet</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VIDEO ── -->
+<section id="video">
+  <p class="section-label reveal">02 — Presentation Video</p>
+  <div class="video-wrapper reveal">
+    <!-- Replace this block with your actual video embed:
+         YouTube:  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/YOUR_ID" frameborder="0" allowfullscreen></iframe>
+         Or a direct <video> tag if self-hosted -->
+    <div class="video-placeholder">
+      <div class="play-btn">
+        <svg width="20" height="20" viewBox="0 0 20 20">
+          <path d="M6 4l12 6-12 6V4z" fill="#c8f542"/>
+        </svg>
+      </div>
+      <p>VIDEO COMING SOON</p>
+      <p style="margin-top:0.4rem; font-size:0.65rem; opacity:0.5;">Replace this block with a YouTube embed or &lt;video&gt; tag</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <p class="section-label reveal">03 — Hva jeg kan tilby</p>
+  <div class="skills-grid reveal">
+    <div class="skill-card">
+      <div class="icon">🧠</div>
+      <h3>Problemløsning</h3>
+      <p>Strukturert tilnærming til utfordringer og problemer. Jeg analyserer situasjoner kritisk og finner effektive løsninger.</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">💻</div>
+      <h3>IT-Kompetanse</h3>
+      <p>Sterk forståelse av IT-systemer og teknologi. Alltid oppdatert på nye utviklinger og teknologier.</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">🤝</div>
+      <h3>Kundeservice</h3>
+      <p>Erfaring med å håndtere kunder med profesjonalitet og empati. Jeg lytter aktivt og løser problemer.</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">⚡</div>
+      <h3>Initiativ & Energi</h3>
+      <p>Motivert og engasjert til å ta på meg nye oppgaver. Jeg bidrar aktivt og bringer positiv energi til teamet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <p class="section-label reveal">04 — Kontakt</p>
+  <div class="contact-inner reveal">
+    <h2>Kom i kontakt med meg.</h2>
+    <p>Interesert i å ha meg som praksisstudent? Gjerne ta kontakt kontakt nedenfor.</p>
+    <div class="contact-links">
+      <a href="mailto:danieltallaksen@gmail.com" class="contact-link">
+        <span>Email</span>
+        <span>danieltallaksen@gmail.com</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="mailto:daniet18@uia.no" class="contact-link">
+        <span>Studie-epost</span>
+        <span>daniet18@uia.no</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="tel:96018845" class="contact-link">
+        <span>Telefon</span>
+        <span>960 18 845</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://www.linkedin.com/in/daniel-tallaksen-340138318?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="contact-link">
+        <span>LinkedIn</span>
+        <span>linkedin.com/in/daniel-tallaksen-340138318</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://praksisportalen.org" target="_blank" class="contact-link">
+        <span>Portal</span>
+        <span>praksisportalen.org</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</div>
  
 <!-- ── FOOTER ── -->
 <footer>
-  <span>© 2026 Elias Lyng</span>
+  <span>© 2026 IS-302 Praksisprosjekt</span>
   <span>thelyng.dev</span>
 </footer>
  
 <script>
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
+  // Tab switching functionality
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const profiles = document.querySelectorAll('.profile');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const profileId = btn.dataset.profile;
+      
+      // Remove active class from all tabs and profiles
+      tabButtons.forEach(b => b.classList.remove('active'));
+      profiles.forEach(p => p.classList.remove('active'));
+      
+      // Add active class to clicked tab and corresponding profile
+      btn.classList.add('active');
+      document.getElementById(profileId + '-profile').classList.add('active');
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+      
+      // Re-initialize reveal animations
+      initializeReveal();
     });
-  }, { threshold: 0.1 });
+  });
+
+  // Scroll reveal
+  function initializeReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
  
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => {
+      el.classList.remove('visible');
+      observer.observe(el);
+    });
+  }
+
+  // Initialize on page load
+  initializeReveal();
 </script>
 </body>
 </html>
